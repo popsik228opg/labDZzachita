@@ -1,4 +1,4 @@
-public Map<String, String> getPredecessors() {
+  public Map<String, String> getPredecessors() {
         return new LinkedHashMap<>(predecessors);
     }
 
