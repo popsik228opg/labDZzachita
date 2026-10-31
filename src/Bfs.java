@@ -16,11 +16,11 @@ public class Bfs {
                     "Начальная вершина не найдена: " + start);
         }
 
-        Map<String, Integer> distances = new LinkedHashMap<>();
-        Map<String, String> predecessors = new LinkedHashMap<>();
-        Map<String, Boolean> visited = new HashMap<>();
-        List<String> order = new ArrayList<>();
-        Queue<Vertex> queue = new LinkedList<>();
+        Map<String, Integer> distances = new LinkedHashMap<>();   // расстояния
+Map<String, String>  predecessors = new LinkedHashMap<>(); // откуда пришли
+Map<String, Boolean> visited = new HashMap<>();            // посещённые
+List<String>         order = new ArrayList<>();            // порядок обхода
+Queue<Vertex>        queue = new LinkedList<>();           // очередь BFS
 
         List<Vertex> vertices = new ArrayList<>(graph.getVertices());
         vertices.sort(Comparator.comparing(Vertex::getName));
