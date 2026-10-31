@@ -22,26 +22,27 @@ Map<String, Boolean> visited = new HashMap<>();            // посещённы
 List<String>         order = new ArrayList<>();            // порядок обхода
 Queue<Vertex>        queue = new LinkedList<>();           // очередь BFS
 
-        List<Vertex> vertices = new ArrayList<>(graph.getVertices());
-        vertices.sort(Comparator.comparing(Vertex::getName));
+        List<Vertex> vertices = new ArrayList<>(graph.getVertices()); //копирую вершины графа в список
+        vertices.sort(Comparator.comparing(Vertex::getName)); //сортирую по имени
 
         for (Vertex vertex : vertices) {
-            distances.put(vertex.getName(), Integer.MAX_VALUE);
-            visited.put(vertex.getName(), false);
+            distances.put(vertex.getName(), Integer.MAX_VALUE); // ставлю расстояние бесконечность
+            visited.put(vertex.getName(), false); // посещение вершины = фалсе
         }
 
         distances.put(start, 0);
-        visited.put(start, true);
+        visited.put(start, true); //посещение ставлю как тру чтобы пометить что тут были и положить в очередь
         queue.add(graph.getVertex(start));
 
         while (!queue.isEmpty()) {
-            Vertex current = queue.poll();
+            Vertex current = queue.poll(); //крч если очередь не пуста достаю вершину с начала запоминаю и фиксирую в порядке обхода
             String currentName = current.getName();
             order.add(currentName);
-
-            List<Edge> edges = new ArrayList<>(current.getEdges());
+//использую полл а не ремув тк полл возвращает null а ремув бросает искл
+            
+            List<Edge> edges = new ArrayList<>(current.getEdges()); //изменяемый список самой вершины 
             edges.sort(Comparator.comparing(
-                    edge -> edge.getDestVertex().getName()));
+                    edge -> edge.getDestVertex().getName())); //копируем ребра и сортируем по им кон вершины
 
             for (Edge edge : edges) {
                 Vertex next = edge.getDestVertex();
@@ -70,7 +71,7 @@ Queue<Vertex>        queue = new LinkedList<>();           // очередь BFS
                 }
 
                 current = predecessors.get(current);
-            }
+            } //идём от цели по предшественникам назад к старту, собирая вершины в path
 
             if (!path.get(path.size() - 1).equals(start)) {
                 path.clear();
@@ -78,7 +79,8 @@ Queue<Vertex>        queue = new LinkedList<>();           // очередь BFS
                 Collections.reverse(path);
             }
         }
-
+//если последний элемент обратного пути — не старт, значит цепочка оборвалась (битые данные) → очищаем путь;
+иначе разворачиваем — получаем путь от старта к цели.
         return new BfsResult(order, distances, predecessors, path);
     }
 }
